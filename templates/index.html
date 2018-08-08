@@ -1,32 +1,53 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html>
-	<head>
-		<title>CryptoBot</title>
-	</head>
+<title>W3.CSS Template</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+<style>
+body,h1 {font-family: "Raleway", sans-serif}
+body, html {height: 100%}
+.bgimg {
+    background-image: url('https://www.simpson-associates.co.uk/wp-content/uploads/2018/02/bg2.jpg');
+    min-height: 100%;
+    background-position: center;
+    background-size: cover;
+}
+</style>
+<body>
 
-	<body>
+<div class="bgimg w3-display-container w3-animate-opacity w3-text-white">
+  <div class="w3-display-topleft w3-padding-large w3-xlarge">
+    Zyker
+  </div>
+  <div class="w3-display-middle">
+    <h1 class="w3-jumbo w3-animate-top">CRYPTO BOT</h1>
+    <hr class="w3-border-grey" style="margin:auto;width:40%">
+		<p></p>
+		<form class="w3-large w3-center" method="POST">
+			<select name="cryptoTrigramme">
+		 	 <option value="ETH">Ethereum "ETH"</option>
+		 	 <option value="BTC">Bitcoin "BTC"</option>
+		 	 <option value="XRP">Ripple "XRP"</option>
+		 	 <option value="LTC">Litecoin "LTC"</option>
+		 	 <option value="TRX">Tron "TRX"</option>
+			</select> 
+		<input type="submit" value="Get Info">
+		</form>
 
-	<h1>Choose a Cryptocurrency</h1>
-	<form  method="POST">
-		<select name="cryptoTrigramme">
-	 	 <option value="ETH">Ethereum "ETH"</option>
-	 	 <option value="BTC">Bitcoin "BTC"</option>
-	 	 <option value="XRP">Ripple "XRP"</option>
-	 	 <option value="LTC">Litecoin "LTC"</option>
-	 	 <option value="TRX">Tron "TRX"</option>
-		</select> 
-	<input type="submit" value="Get Info">
-	</form>
+		<p></p>
+		<ul>
+		  <li>Cryto Trigramme: {{ selected_crypto.trigramme }}</li>
+		  <li>Cryto Price: {{ selected_crypto.price }}</li>
+		  <li>Cryto Open Day price: {{ selected_crypto.openDay }}</li>
+		  <li>Cryto Low Day price: {{ selected_crypto.lowDay }}</li>
+		  <li>Cryto High Day price: {{ selected_crypto.highDay }}</li>
+		  <li>Cryto Day evlotion in %: {{ selected_crypto.evolutionDay }}</li>
+		  <li>Cryto MarketCap: {{ selected_crypto.marketCap }}</li>
+		</ul> 
+  </div>
+</div>
 
-	<p></p>
-	<ul>
-	  <li>Cryto Trigramme: {{ selected_crypto.trigramme }}</li>
-	  <li>Cryto Price: {{ selected_crypto.price }}</li>
-	  <li>Cryto Open Day price: {{ selected_crypto.openDay }}</li>
-	  <li>Cryto Low Day price: {{ selected_crypto.lowDay }}</li>
-	  <li>Cryto High Day price: {{ selected_crypto.highDay }}</li>
-	  <li>Cryto Day evlotion in %: {{ selected_crypto.evolutionDay }}</li>
-	  <li>Cryto MarketCap: {{ selected_crypto.marketCap }}</li>
-	</ul> 
 	</body>
 </html> 
