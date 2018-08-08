@@ -1,0 +1,23 @@
+ <!DOCTYPE html>
+<html>
+	<head>
+		<title>CryptoBot</title>
+	</head>
+
+	<body>
+
+	<h1>Choose a Cryptocurrency</h1>
+	<form  method="POST">
+		<select name="cryptoTrigramme">
+	 	 <option value="ETH">Ethereum "ETH"</option>
+	 	 <option value="BTC">Bitcoin "BTC"</option>
+	 	 <option value="XRP">Ripple "XRP"</option>
+	 	 <option value="LTC">Litecoin "LTC"</option>
+	 	 <option value="TRX">Tron "TRX"</option>
+		</select> 
+		<input type="submit" value="Let's GO!">
+	</form>
+
+	<p>current price is: {{ coinName }} </p>
+	</body>
+</html> 
