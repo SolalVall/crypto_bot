@@ -12,11 +12,20 @@ def index():
     error = None
     if request.method == 'POST':
         coinTrigramme = request.form['cryptoTrigramme']
-        myCoin = Coin(coinTrigramme)
-        urlCoin = myCoin.define_url()
-        r = requests.get(urlCoin)
-        print r.json()
-        return render_template('index.html', coinName=myCoin.coinTrigramme, error=error)
+        apiUrl = 'https://min-api.cryptocompare.com/data/pricemultifull?fsyms=' + coinTrigramme + '&tsyms=EUR'
+        selected_crypto = Coin(coinTrigramme, apiUrl)
+
+        cryptoInfo = requests.get(apiUrl)
+        cryptoInfoJson = cryptoInfo.json()
+        #print cryptoInfoJson
+        selected_crypto.price = cryptoInfoJson['RAW'][coinTrigramme]['EUR']['PRICE']    
+        selected_crypto.openDay = cryptoInfoJson['RAW'][coinTrigramme]['EUR']['OPENDAY']
+        selected_crypto.highDay = cryptoInfoJson['RAW'][coinTrigramme]['EUR']['HIGHDAY'] 
+        selected_crypto.lowDay = cryptoInfoJson['RAW'][coinTrigramme]['EUR']['LOWDAY']
+        selected_crypto.marketCap = cryptoInfoJson['RAW'][coinTrigramme]['EUR']['MKTCAP'] 
+        selected_crypto.evolutionDay = cryptoInfoJson['RAW'][coinTrigramme]['EUR']['CHANGEPCTDAY']
+
+        return render_template('index.html', selected_crypto=selected_crypto, error=error)
     else:
         return render_template('index.html', error=error)
 

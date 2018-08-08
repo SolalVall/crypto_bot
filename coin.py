@@ -1,8 +1,10 @@
 class Coin:
-    def __init__(self, coinTrigramme):
-        self.coinTrigramme = coinTrigramme
-
-    def define_url(self):
-        coinUrlPrice = 'https://min-api.cryptocompare.com/data/price?fsym=' + self.coinTrigramme + '&tsyms=EUR'
-        return coinUrlPrice
-
+    def __init__(self, trigramme, apiUrl, price=None, openDay=None, highDay=None, lowDay=None, marketCap=None, evolutionDay=None):
+        self.trigramme = trigramme
+        self.url = apiUrl
+        self.price = 0
+        self.openDay = 0
+        self.highDay = 0
+        self.lowDay = 0
+        self.marketCap = 0
+        self.evolutionDay = 0
