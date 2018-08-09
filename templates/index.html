@@ -33,19 +33,14 @@ body, html {height: 100%}
 		 	 <option value="LTC">Litecoin "LTC"</option>
 		 	 <option value="TRX">Tron "TRX"</option>
 			</select> 
-		<input type="submit" value="Get Info">
+		<input type="submit" name="test" value="Get Info">
 		</form>
-
-		<p></p>
-		<ul>
-		  <li>Cryto Trigramme: {{ selected_crypto.trigramme }}</li>
-		  <li>Cryto Price: {{ selected_crypto.price }}</li>
-		  <li>Cryto Open Day price: {{ selected_crypto.openDay }}</li>
-		  <li>Cryto Low Day price: {{ selected_crypto.lowDay }}</li>
-		  <li>Cryto High Day price: {{ selected_crypto.highDay }}</li>
-		  <li>Cryto Day evlotion in %: {{ selected_crypto.evolutionDay }}</li>
-		  <li>Cryto MarketCap: {{ selected_crypto.marketCap }}</li>
-		</ul> 
+		<br>
+		{% block content %}
+			{% if selected_crypto %}
+				{% include 'info.html' %}
+			{% endif %}
+    {% endblock %}
   </div>
 </div>
 
