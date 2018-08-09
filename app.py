@@ -11,24 +11,30 @@ app = Flask(__name__)
 def index():
     error = None
     if request.method == 'POST':
-        coinTrigramme = request.form['cryptoTrigramme']
-        coinDevise = request.form['cryptoDevise'] 
-        apiUrl = 'https://min-api.cryptocompare.com/data/pricemultifull?fsyms=' + coinTrigramme + '&tsyms=' + coinDevise
-        selected_crypto = Coin(coinTrigramme, coinDevise, apiUrl)
+        if request.form['bttnInfo'] == 'Get Info':
+            coinTrigramme = request.form['cryptoTrigramme']
+            coinDevise = request.form['cryptoDevise'] 
+            apiUrl = 'https://min-api.cryptocompare.com/data/pricemultifull?fsyms=' + coinTrigramme + '&tsyms=' + coinDevise
+            selected_crypto = Coin(coinTrigramme, coinDevise, apiUrl)
 
-        cryptoInfo = requests.get(apiUrl)
-        cryptoInfoJson = cryptoInfo.json()
-        #print cryptoInfoJson
-        selected_crypto.price = cryptoInfoJson['RAW'][coinTrigramme][coinDevise]['PRICE']    
-        selected_crypto.openDay = cryptoInfoJson['RAW'][coinTrigramme][coinDevise]['OPENDAY']
-        selected_crypto.highDay = cryptoInfoJson['RAW'][coinTrigramme][coinDevise]['HIGHDAY'] 
-        selected_crypto.lowDay = cryptoInfoJson['RAW'][coinTrigramme][coinDevise]['LOWDAY']
-        selected_crypto.marketCap = cryptoInfoJson['RAW'][coinTrigramme][coinDevise]['MKTCAP'] 
-        selected_crypto.evolutionDay = cryptoInfoJson['RAW'][coinTrigramme][coinDevise]['CHANGEPCTDAY']
+            cryptoInfo = requests.get(apiUrl)
+            cryptoInfoJson = cryptoInfo.json()
+            #print cryptoInfoJson
+            selected_crypto.price = cryptoInfoJson['RAW'][coinTrigramme][coinDevise]['PRICE']    
+            selected_crypto.openDay = cryptoInfoJson['RAW'][coinTrigramme][coinDevise]['OPENDAY']
+            selected_crypto.highDay = cryptoInfoJson['RAW'][coinTrigramme][coinDevise]['HIGHDAY'] 
+            selected_crypto.lowDay = cryptoInfoJson['RAW'][coinTrigramme][coinDevise]['LOWDAY']
+            selected_crypto.marketCap = cryptoInfoJson['RAW'][coinTrigramme][coinDevise]['MKTCAP'] 
+            selected_crypto.evolutionDay = cryptoInfoJson['RAW'][coinTrigramme][coinDevise]['CHANGEPCTDAY']
 
-        return render_template('index.html', selected_crypto=selected_crypto, error=error)
+            return render_template('index.html', selected_crypto=selected_crypto, error=error)
     else:
         return render_template('index.html', error=error)
+
+@app.route('/startbot', methods=['POST','GET'])
+def startbot():
+    error = None
+    return render_template('bot.html', error=error)
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000,debug=True)

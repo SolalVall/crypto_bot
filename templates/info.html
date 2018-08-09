@@ -9,6 +9,8 @@
 	  <li>{{ selected_crypto.trigramme }} MarketCap: {{ selected_crypto.marketCap }} {{ selected_crypto.symbol }} </li>
 	</ul> 
 	<div class="w3-animate-bottom" style="text-align:center">
-				<button type="button" class="w3-button w3-border">Start Bot</button>
+		<form method="POST" action="{{ url_for('startbot') }}">
+			<input type="submit" class="w3-button w3-border"  name="bttnBot" value="Start Bot">
+		</form>
 	</div>
 {% endblock %}
