@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta charset="ISO-8859-1"> 
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/style.css') }}">
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
 <style>
@@ -25,21 +26,22 @@ body, html {height: 100%}
 	    <h1 class="w3-jumbo w3-animate-top">CRYPTO BOT</h1>
 	    <hr class="w3-border-grey" style="margin:auto;width:40%">
 			<p></p>
-			<form class="w3-large w3-center" method="POST">
-				<select name="cryptoTrigramme">
-			 	 <option value="ETH">Ethereum "ETH"</option>
-			 	 <option value="BTC">Bitcoin "BTC"</option>
-			 	 <option value="XRP">Ripple "XRP"</option>
-			 	 <option value="LTC">Litecoin "LTC"</option>
-			 	 <option value="TRX">Tron "TRX"</option>
-				</select>
-				<select name="cryptoDevise">
-			 	 <option value="USD">In USD</option>
-			 	 <option value="EUR">In EUR</option>
-			 	 <option value="BTC">In BTC</option>
-				</select>
-				<input type="submit" name="test" value="Get Info">
-			</form>
+					<form class="w3-large w3-center" method="POST">
+						<select class="w3-border w3-button" name="cryptoTrigramme">
+					 	 <option value="ETH">Ethereum "ETH"</option>
+					 	 <option value="BTC">Bitcoin "BTC"</option>
+					 	 <option value="XRP">Ripple "XRP"</option>
+					 	 <option value="LTC">Litecoin "LTC"</option>
+					 	 <option value="TRX">Tron "TRX"</option>
+						</select>
+						<select class="w3-border w3-button" name="cryptoDevise">
+						<i class="fa fa-caret-down"></i>
+					 	 <option value="USD">In USD</option>
+					 	 <option value="EUR">In EUR</option>
+					 	 <option value="BTC">In BTC</option>
+						</select>
+						<input class="w3-border w3-button" type="submit" name="test" value="Get Info">
+					</form>
 			<br>
 			{% block content %}
 				{% if selected_crypto %}
