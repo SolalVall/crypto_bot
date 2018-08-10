@@ -25,13 +25,21 @@ body, html {height: 100%}
       <h1 class="w3-jumbo w3-animate-top">CRYPTO BOT</h1>
       <hr class="w3-border-grey" style="margin:auto;width:40%">
 			<br>
-			<p>Insert value and start bot for {{ selected_crypto.trigramme }}</p>
-			<form name="runBot">
-				 Check Duration: <input type="text" class="w3-input" name="duration"><br>
-				 Check Increase Pourcentage: <input type="text" class="w3-input" name="pourcentageUp"><br>
-				 Check Decrease Pourcentage: <input type="text" class="w3-input" name="pourcentageDown"><br>
+			<p class="w3-large">Insert value and start bot for {{ selected_crypto.trigramme }}</p>
+			<form name="runBot" method="POST">
+				 Insert Bot Duration: <input type="text" class="w3-input" name="duration"><br>
+				 Insert Increase Pourcentage: <input type="text" class="w3-input" name="pourcentageUp"><br>
+				 Insert Decrease Pourcentage: <input type="text" class="w3-input" name="pourcentageDown"><br>
 				<div class="w3-animate-bottom" style="text-align:center">
-					<input type="submit" class="w3-button w3-border"  name="bttnBot" value="Run Bot">
+					{% if notInt %}
+						<p class="w3-large w3-text-red">{{ notInt }}</p>
+					{% endif %}
+					<input type="submit" class="w3-button w3-border"  name="bttnRunBot" value="Run Bot">
+				</div>
+			</form>
+			<form name="goBack"  action="{{ url_for('index') }}">	
+				<div class="w3-animate-bottom" style="text-align:center">
+					<input type="submit" class="w3-button w3-border"  name="goBack" value="Go Back >">
 				</div>
 			</form>
 		</div>

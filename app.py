@@ -13,23 +13,21 @@ def index():
     error = None
     if request.method == 'POST':
         if request.form['bttnInfo'] == 'Get Info':
-            coinTrigramme = request.form['cryptoTrigramme']
-            coinDevise = request.form['cryptoDevise'] 
-            apiUrl = 'https://min-api.cryptocompare.com/data/pricemultifull?fsyms=' + coinTrigramme + '&tsyms=' + coinDevise
-            #selected_crypto = Coin(coinTrigramme, coinDevise, apiUrl)
-            selected_crypto.trigramme = coinTrigramme
-            selected_crypto.devise = coinDevise
-            selected_crypto.apiUrl = apiUrl
-
-            cryptoInfo = requests.get(apiUrl)
+            selected_crypto.trigramme = request.form['cryptoTrigramme']
+            selected_crypto.devise = request.form['cryptoDevise'] 
+            selected_crypto.assign_symbol()
+            selected_crypto.apiUrl = 'https://min-api.cryptocompare.com/data/pricemultifull?fsyms=' + selected_crypto.trigramme + '&tsyms=' + selected_crypto.devise
+            
+            cryptoInfo = requests.get(selected_crypto.apiUrl)
             cryptoInfoJson = cryptoInfo.json()
             #print cryptoInfoJson
-            selected_crypto.price = cryptoInfoJson['RAW'][coinTrigramme][coinDevise]['PRICE']    
-            selected_crypto.openDay = cryptoInfoJson['RAW'][coinTrigramme][coinDevise]['OPENDAY']
-            selected_crypto.highDay = cryptoInfoJson['RAW'][coinTrigramme][coinDevise]['HIGHDAY'] 
-            selected_crypto.lowDay = cryptoInfoJson['RAW'][coinTrigramme][coinDevise]['LOWDAY']
-            selected_crypto.marketCap = cryptoInfoJson['RAW'][coinTrigramme][coinDevise]['MKTCAP'] 
-            selected_crypto.evolutionDay = cryptoInfoJson['RAW'][coinTrigramme][coinDevise]['CHANGEPCTDAY']
+            
+            selected_crypto.price = cryptoInfoJson['RAW'][selected_crypto.trigramme][selected_crypto.devise]['PRICE']    
+            selected_crypto.openDay = cryptoInfoJson['RAW'][selected_crypto.trigramme][selected_crypto.devise]['OPENDAY']
+            selected_crypto.highDay = cryptoInfoJson['RAW'][selected_crypto.trigramme][selected_crypto.devise]['HIGHDAY'] 
+            selected_crypto.lowDay = cryptoInfoJson['RAW'][selected_crypto.trigramme][selected_crypto.devise]['LOWDAY']
+            selected_crypto.marketCap = cryptoInfoJson['RAW'][selected_crypto.trigramme][selected_crypto.devise]['MKTCAP'] 
+            selected_crypto.evolutionDay = cryptoInfoJson['RAW'][selected_crypto.trigramme][selected_crypto.devise]['CHANGEPCTDAY']
 
             return render_template('index.html', selected_crypto=selected_crypto, error=error)
     else:
@@ -38,7 +36,17 @@ def index():
 @app.route('/startbot', methods=['POST','GET'])
 def startbot():
     error = None
-    return render_template('bot.html', selected_crypto=selected_crypto, error=error)
+    if request.method == "POST":
+        try:
+            selected_crypto.duration = int(request.form['duration'])
+            selected_crypto.pourcentageHigh = int(request.form['pourcentageUp'])
+            selected_crypto.pourcentageLow = int(request.form['pourcentageDown'])
+            return render_template('bot.html', selected_crypto=selected_crypto, error=error)
+        except ValueError:
+            notInt = 'Please you have to enter only numeric values [0-9]'
+            return render_template('bot.html', notInt=notInt, selected_crypto=selected_crypto, error=error)
+    else:
+        return render_template('bot.html', selected_crypto=selected_crypto, error=error)
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000,debug=True)
@@ -56,7 +64,7 @@ if __name__ == '__main__':
 #	time.sleep(5)
 #	timer += 5
 #	r = requests.get(url).json()
-#	array_eth_price.append(r[coinDevise])
+#	array_eth_price.append(r[selected_crypto.devise])
 #	
 #	if(len(array_eth_price) > 1):
 #		variation_pourcentage = (float(array_eth_price[-1]-array_eth_price[0])/float(array_eth_price[0]))*100
