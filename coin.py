@@ -1,6 +1,6 @@
 # coding: utf-8
 class Coin:
-    def __init__(self, trigramme, devise, apiUrl, symbol=None,price=None, openDay=None, highDay=None, lowDay=None, marketCap=None, evolutionDay=None):
+    def __init__(self, trigramme=None, devise=None, apiUrl=None, symbol=None,price=None, openDay=None, highDay=None, lowDay=None, marketCap=None, evolutionDay=None):
         self.trigramme = trigramme
         self.devise = devise
         

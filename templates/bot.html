@@ -25,6 +25,15 @@ body, html {height: 100%}
       <h1 class="w3-jumbo w3-animate-top">CRYPTO BOT</h1>
       <hr class="w3-border-grey" style="margin:auto;width:40%">
 			<br>
+			<p>Insert value and start bot for {{ selected_crypto.trigramme }}</p>
+			<form name="runBot">
+				 Check Duration: <input type="text" class="w3-input" name="duration"><br>
+				 Check Increase Pourcentage: <input type="text" class="w3-input" name="pourcentageUp"><br>
+				 Check Decrease Pourcentage: <input type="text" class="w3-input" name="pourcentageDown"><br>
+				<div class="w3-animate-bottom" style="text-align:center">
+					<input type="submit" class="w3-button w3-border"  name="bttnBot" value="Run Bot">
+				</div>
+			</form>
 		</div>
 	</div>
 </body>

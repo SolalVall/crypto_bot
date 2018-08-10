@@ -1,5 +1,5 @@
 {% block content %}
-	<ul class="w3-large w3-animate-bottom">
+	<ul class="w3-large">
 		<li>Cryto Trigramme: {{ selected_crypto.trigramme }}</li>
 	  <li>{{ selected_crypto.trigramme }} Price: {{ selected_crypto.price }} {{ selected_crypto.symbol }}</li>
 	  <li>{{ selected_crypto.trigramme }} Open Day price: {{ selected_crypto.openDay }} {{ selected_crypto.symbol }}</li>
@@ -10,7 +10,7 @@
 	</ul> 
 	<div class="w3-animate-bottom" style="text-align:center">
 		<form method="POST" action="{{ url_for('startbot') }}">
-			<input type="submit" class="w3-button w3-border"  name="bttnBot" value="Start Bot">
+			<input type="submit" class="w3-button w3-border"  name="bttnBot" value="Config Bot">
 		</form>
 	</div>
 {% endblock %}

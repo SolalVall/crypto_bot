@@ -6,6 +6,7 @@ from coin import Coin
 from flask import Flask, render_template, request
 
 app = Flask(__name__)
+selected_crypto = Coin()
 
 @app.route('/', methods=['POST','GET'])
 def index():
@@ -15,7 +16,10 @@ def index():
             coinTrigramme = request.form['cryptoTrigramme']
             coinDevise = request.form['cryptoDevise'] 
             apiUrl = 'https://min-api.cryptocompare.com/data/pricemultifull?fsyms=' + coinTrigramme + '&tsyms=' + coinDevise
-            selected_crypto = Coin(coinTrigramme, coinDevise, apiUrl)
+            #selected_crypto = Coin(coinTrigramme, coinDevise, apiUrl)
+            selected_crypto.trigramme = coinTrigramme
+            selected_crypto.devise = coinDevise
+            selected_crypto.apiUrl = apiUrl
 
             cryptoInfo = requests.get(apiUrl)
             cryptoInfoJson = cryptoInfo.json()
@@ -34,7 +38,7 @@ def index():
 @app.route('/startbot', methods=['POST','GET'])
 def startbot():
     error = None
-    return render_template('bot.html', error=error)
+    return render_template('bot.html', selected_crypto=selected_crypto, error=error)
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000,debug=True)

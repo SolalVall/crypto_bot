@@ -2,6 +2,8 @@
 pipExist=$(which pip)
 packagesExists=$( pip list | grep 'Flask\|requests' )
 
+echo -e "\n------------------------CHECK NECESSARY PACKAGES--------------------------\n"
+
 #Check if pip is installed
 if [ -z "$pipExist" ]
 then
@@ -19,12 +21,12 @@ fi
 if [ -z "$packagesExists" ]
 then
 	echo -e "\nPackages are not installed"
-	sudo pip install Flask, requests
+	sudo pip install Flask requests
 else
 	echo -e "\nPackages are already installed:\n"
 	echo -e "$packagesExists \n"
 fi
 
 # Run app.py with flask command
-echo -e "\n---------------------START APP---------------------\n"
+echo -e "\n--------------------------------START APP---------------------------------\n"
 flask run
