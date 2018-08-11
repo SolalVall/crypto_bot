@@ -1,9 +1,11 @@
 # coding: utf-8
 class Coin:
-    def __init__(self, trigramme=None, devise=None, apiUrl=None, symbol=None,price=None, openDay=None, highDay=None, lowDay=None, marketCap=None, evolutionDay=None, duration=None, pourcentageDown=None, pourcentageUp=None):
+    import time
+    import requests
+    def __init__(self, trigramme=None, devise=None, url=None, symbol=None,price=None, openDay=None, highDay=None, lowDay=None, marketCap=None, evolutionDay=None, duration=None, pourcentageDown=None, pourcentageUp=None):
         self.trigramme = trigramme
         self.devise = devise
-        self.url = apiUrl
+        self.url = url
         self.price = 0
         self.openDay = 0
         self.highDay = 0
@@ -21,3 +23,11 @@ class Coin:
             self.symbol = u"\u20AC"
         else:
             self.symbol = self.devise
+    
+    def checkPrice(self, url, trigramme, devise, oldPrice):
+        apiRequest = self.requests.get(url)
+        apiRequestJson = apiRequest.json()
+        updatedPrice = apiRequestJson['RAW'][trigramme][devise]['PRICE']
+        return updatedPrice
+        
+

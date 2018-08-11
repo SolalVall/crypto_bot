@@ -8,15 +8,21 @@
 	<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
 	<style>
-	body,h1 {font-family: "Raleway", sans-serif}
-	body, html {height: 100%}
-	.bgimg {
-	    background-image: url('https://www.simpson-associates.co.uk/wp-content/uploads/2018/02/bg2.jpg');
-	    min-height: 100%;
-	    background-position: center;
-	    background-size: cover;
-	}
+		body,h1 {font-family: "Raleway", sans-serif}
+		body, html {height: 100%}
+		.bgimg {
+		    background-image: url('https://www.simpson-associates.co.uk/wp-content/uploads/2018/02/bg2.jpg');
+		    min-height: 100%;
+		    background-position: center;
+		    background-size: cover;
+		}
 	</style>
+	<script type="text/javascript"
+	  src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js">
+	</script>
+	<script type="text/javascript">
+	  var $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
+	</script>
 </head>
 <body>
   <div class="bgimg w3-display-container w3-animate-opacity w3-text-white">

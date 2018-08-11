@@ -3,7 +3,7 @@ import requests
 import json
 import time
 from coin import Coin
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, url_for, redirect, jsonify
 
 app = Flask(__name__)
 selected_crypto = Coin()
@@ -16,9 +16,9 @@ def index():
             selected_crypto.trigramme = request.form['cryptoTrigramme']
             selected_crypto.devise = request.form['cryptoDevise'] 
             selected_crypto.assign_symbol()
-            selected_crypto.apiUrl = 'https://min-api.cryptocompare.com/data/pricemultifull?fsyms=' + selected_crypto.trigramme + '&tsyms=' + selected_crypto.devise
+            selected_crypto.url = 'https://min-api.cryptocompare.com/data/pricemultifull?fsyms=' + selected_crypto.trigramme + '&tsyms=' + selected_crypto.devise
             
-            cryptoInfo = requests.get(selected_crypto.apiUrl)
+            cryptoInfo = requests.get(selected_crypto.url)
             cryptoInfoJson = cryptoInfo.json()
             #print cryptoInfoJson
             
@@ -37,16 +37,25 @@ def index():
 def startbot():
     error = None
     if request.method == "POST":
+        #Check if HTML inputs are INT or STRING whit int()
         try:
             selected_crypto.duration = int(request.form['duration'])
             selected_crypto.pourcentageHigh = int(request.form['pourcentageUp'])
             selected_crypto.pourcentageLow = int(request.form['pourcentageDown'])
-            return render_template('bot.html', selected_crypto=selected_crypto, error=error)
+            return render_template('checkPrice.html', selected_crypto=selected_crypto, error=error)
         except ValueError:
             notInt = 'Please you have to enter only numeric values [0-9]'
             return render_template('bot.html', notInt=notInt, selected_crypto=selected_crypto, error=error)
     else:
         return render_template('bot.html', selected_crypto=selected_crypto, error=error)
+
+
+@app.route('/_checkPrice', methods=['GET'])
+def checkPrice():
+    result = selected_crypto.checkPrice(selected_crypto.url, selected_crypto.trigramme
+    , selected_crypto.devise, selected_crypto.price)
+    print result 
+    return jsonify(result=result)
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000,debug=True)

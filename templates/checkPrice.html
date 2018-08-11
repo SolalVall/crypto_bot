@@ -1,4 +1,18 @@
 {% extends "skeleton.html" %}
 {% block content %}
-	<p>{{ selected_crypto.price }}</p>
+<script type="text/javascript">
+		//play update_values func each 5 secs for updating screen
+		var update_screen = setInterval(get_price,5000);
+
+		// get infos from app.py and api
+		function get_price() {
+  		$.getJSON($SCRIPT_ROOT + '/_checkPrice', function(data) {
+  	    $('#result').text(data.result);
+  	    console.log(data)
+  	  });      
+	}
+</script>
+
+<span id="result">Starting...</span>
+
 {% endblock content %}
