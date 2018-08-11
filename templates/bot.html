@@ -1,48 +1,20 @@
-<html>
-<title>CryptoBot</title>
-<meta charset="UTF-8">
-<meta charset="ISO-8859-1"> 
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/style.css') }}">
-<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
-<style>
-body,h1 {font-family: "Raleway", sans-serif}
-body, html {height: 100%}
-.bgimg {
-    background-image: url('https://www.simpson-associates.co.uk/wp-content/uploads/2018/02/bg2.jpg');
-    min-height: 100%;
-    background-position: center;
-    background-size: cover;
-}
-</style>
-<body>
-  <div class="bgimg w3-display-container w3-animate-opacity w3-text-white">
-    <div class="w3-display-topleft w3-padding-large w3-xlarge">
-      Zyker
-    </div>
-    <div class="w3-display-middle">
-      <h1 class="w3-jumbo w3-animate-top">CRYPTO BOT</h1>
-      <hr class="w3-border-grey" style="margin:auto;width:40%">
-			<br>
-			<p class="w3-large">Insert value and start bot for {{ selected_crypto.trigramme }}</p>
-			<form name="runBot" method="POST">
-				 Insert Bot Duration: <input type="text" class="w3-input" name="duration"><br>
-				 Insert Increase Pourcentage: <input type="text" class="w3-input" name="pourcentageUp"><br>
-				 Insert Decrease Pourcentage: <input type="text" class="w3-input" name="pourcentageDown"><br>
-				<div class="w3-animate-bottom" style="text-align:center">
-					{% if notInt %}
-						<p class="w3-large w3-text-red">{{ notInt }}</p>
-					{% endif %}
-					<input type="submit" class="w3-button w3-border"  name="bttnRunBot" value="Run Bot">
-				</div>
-			</form>
-			<form name="goBack"  action="{{ url_for('index') }}">	
-				<div class="w3-animate-bottom" style="text-align:center">
-					<input type="submit" class="w3-button w3-border"  name="goBack" value="Go Back >">
-				</div>
-			</form>
+{% extends "skeleton.html" %}
+{% block content %}
+	<p class="w3-large">Insert value and start bot for {{ selected_crypto.trigramme }}</p>
+	<form name="runBot" method="POST">
+		 Insert Bot Duration: <input type="text" class="w3-input" name="duration"><br>
+		 Insert Increase Pourcentage: <input type="text" class="w3-input" name="pourcentageUp"><br>
+		 Insert Decrease Pourcentage: <input type="text" class="w3-input" name="pourcentageDown"><br>
+		<div class="w3-animate-bottom" style="text-align:center">
+			{% if notInt %}
+				<p class="w3-large w3-text-red">{{ notInt }}</p>
+			{% endif %}
+			<input type="submit" class="w3-button w3-border"  name="bttnRunBot" value="Run Bot">
 		</div>
-	</div>
-</body>
-</html>
+	</form>
+	<form name="goBack"  action="{{ url_for('index') }}">	
+		<div class="w3-animate-bottom" style="text-align:center">
+			<input type="submit" class="w3-button w3-border"  name="goBack" value="Go Back >">
+		</div>
+	</form>
+{% endblock content %}
