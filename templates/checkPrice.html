@@ -7,12 +7,24 @@
 		// get infos from app.py and api
 		function get_price() {
   		$.getJSON($SCRIPT_ROOT + '/_checkPrice', function(data) {
-  	    $('#result').text(data.result);
+				if(data.previousPrice > data.result){
+  	    	$('#priceUpdated').text('Actual Price: ' + data.result + ' \u21E9');
+					$('#priceUpdated').css( "color", "red" );
+				}
+				else if(data.previousPrice < data.result){
+  	    	$('#priceUpdated').text('Actual Price: ' + data.result + ' \u21E7');
+					$('#priceUpdated').css( "color", "green" );
+				}
+				else {
+  	    	$('#priceUpdated').text('Actual Price: ' + data.result + ' =');
+					$('#priceUpdated').css( "color", "white" );
+				}
+				
   	    console.log(data)
   	  });      
 	}
 </script>
 
-<span id="result">Starting...</span>
+<span id="priceUpdated" class="w3-large">Starting...</span>
 
 {% endblock content %}

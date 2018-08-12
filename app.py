@@ -52,10 +52,9 @@ def startbot():
 
 @app.route('/_checkPrice', methods=['GET'])
 def checkPrice():
-    result = selected_crypto.checkPrice(selected_crypto.url, selected_crypto.trigramme
-    , selected_crypto.devise, selected_crypto.price)
-    print result 
-    return jsonify(result=result)
+    selected_crypto.price = selected_crypto.updatedPrice
+    result = selected_crypto.update_price(selected_crypto.url, selected_crypto.trigramme, selected_crypto.devise)
+    return jsonify(result=result, previousPrice=selected_crypto.price)
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000,debug=True)

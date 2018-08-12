@@ -2,7 +2,7 @@
 class Coin:
     import time
     import requests
-    def __init__(self, trigramme=None, devise=None, url=None, symbol=None,price=None, openDay=None, highDay=None, lowDay=None, marketCap=None, evolutionDay=None, duration=None, pourcentageDown=None, pourcentageUp=None):
+    def __init__(self, trigramme=None, devise=None, url=None, symbol=None,price=None, openDay=None, highDay=None, lowDay=None, marketCap=None, evolutionDay=None, duration=None, pourcentageDown=None, pourcentageUp=None, comparePrice=None, updatedPrice=None):
         self.trigramme = trigramme
         self.devise = devise
         self.url = url
@@ -15,6 +15,8 @@ class Coin:
         self.pourcentageHigh = 0 
         self.pourcentageLow = 0 
         self.duration = 0 
+        self.updatedPrice = 0
+        self.comparePrice = []
 
     def assign_symbol(self):
         if(self.devise == 'USD'):
@@ -24,10 +26,9 @@ class Coin:
         else:
             self.symbol = self.devise
     
-    def checkPrice(self, url, trigramme, devise, oldPrice):
+    def update_price(self, url, trigramme, devise):
         apiRequest = self.requests.get(url)
         apiRequestJson = apiRequest.json()
-        updatedPrice = apiRequestJson['RAW'][trigramme][devise]['PRICE']
-        return updatedPrice
-        
+        self.updatedPrice = apiRequestJson['RAW'][trigramme][devise]['PRICE']
+        return self.updatedPrice
 
