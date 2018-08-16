@@ -14,7 +14,7 @@ def index():
     if request.method == 'POST':
         if request.form['bttnInfo'] == 'Get Info':
             selected_crypto.trigramme = request.form['cryptoTrigramme']
-            selected_crypto.devise = request.form['cryptoDevise'] 
+            selected_crypto.devise = request.form['cryptoDevise']
             selected_crypto.assign_symbol()
             selected_crypto.url = 'https://min-api.cryptocompare.com/data/pricemultifull?fsyms=' + selected_crypto.trigramme + '&tsyms=' + selected_crypto.devise
             
@@ -31,7 +31,8 @@ def index():
 
             return render_template('index.html', selected_crypto=selected_crypto, error=error)
     else:
-        return render_template('index.html', error=error)
+        test = ['Bitcoin','Ethereum','LiteCoin','Ripple','Eos']
+        return render_template('index.html', test=test, error=error)
 
 @app.route('/startbot', methods=['POST','GET'])
 def startbot():

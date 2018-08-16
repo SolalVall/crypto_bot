@@ -10,7 +10,7 @@ then
 	echo "Pip is not installed\n"
 	echo -e "Download get-pip script:"
 	curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
-	sudo python get-pip.py --user
+	sudo python get-pip.py
 	rm get-pip.py
 else
 	echo -e "Pip is already installed: \n"

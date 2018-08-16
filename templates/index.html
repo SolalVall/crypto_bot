@@ -1,5 +1,91 @@
 {% extends "skeleton.html" %}
 {% block content %}	
+<div class="accordion">
+  <ul>
+		{% for crypto in test %}
+			<li tabindex="{{ loop.index }}">
+      <div>
+        <a href="javascript: void(0)">
+          <h2>{{ crypto }}</h2>
+          <p>Select a device and start {{ crypto }} Bot</p>
+					<form class="w3-display-bottomright" method="POST">
+						<select class="w3-border w3-button" name="cryptoDevise">
+				 		 <option value="USD">In USD</option>
+				 		 <option value="EUR">In EUR</option>
+				 		 <option value="BTC">In BTC</option>
+						</select>
+					<input class="w3-border w3-button" type="submit" name="bttnInfo"  value="Get Info">
+					</form>
+        </a>
+      </div>
+			</li>
+		{% endfor %}
+   <!-- <li tabindex="1">
+
+      <div>
+        <a href="javascript: void(0)">
+          <h2>Bitcoin</h2>
+          <p>Select a device and start Bitcoin Bot</p>
+					<form class="w3-display-bottomright" method="POST">
+						<select class="w3-border w3-button" name="cryptoDevise">
+				 		 <option value="USD">In USD</option>
+				 		 <option value="EUR">In EUR</option>
+				 		 <option value="BTC">In BTC</option>
+						</select>
+					<input class="w3-border w3-button" type="submit" name="bttnInfo"  value="Get Info">
+					</form>
+        </a>
+      </div>
+    </li>
+    <li tabindex="2">
+      <div>
+					<form class="w3-display-bottomright" method="POST">
+          	<h2>Ethereum</h2>
+          	<p>Select a device and start Bitcoin Bot</p>
+							<select class="w3-border w3-button" name="cryptoDevise">
+				 			 <option value="USD">In USD</option>
+				 			 <option value="EUR">In EUR</option>
+				 			 <option value="BTC">In BTC</option>
+							</select>
+						<input class="w3-border w3-button" type="submit" name="bttnInfo"  value="Get Info">
+					</form>
+        </a>
+      </div>
+    </li>
+    <li tabindex="3">
+      <div>
+        <a href="#">
+          <h2>Ripple</h2>
+          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit</p>
+        </a>
+      </div>
+    </li>
+    <li tabindex="4">
+      <div>
+        <a href="#">
+          <h2>Litecoin</h2>
+          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit</p>
+        </a>
+      </div>
+    </li>
+    <li tabindex="5">
+      <div>
+        <a href="#">
+          <h2>Eos</h2>
+          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit</p>
+        </a>
+      </div>
+    </li>
+    <li tabindex="6">
+      <div>
+        <a href="#">
+          <h2>Other Cryptos</h2>
+          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit</p>
+        </a>
+      </div>
+    </li>-->
+  </ul>
+</div>
 <form class="w3-large w3-center" method="POST">
 					<select class="w3-border w3-button" name="cryptoTrigramme">
 				 	 <option value="ETH">Ethereum "ETH"</option>
@@ -15,7 +101,6 @@
 					</select>
 					<input class="w3-border w3-button" type="submit" name="bttnInfo"  value="Get Info">
 				</form>
-			<br>
 			{% if selected_crypto %}
 					{% include 'info.html' %}
 			{% endif %}
