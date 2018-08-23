@@ -16,18 +16,20 @@
 					</form>
       </div>
 		</li>
-		{% for crypto in test %}
+		{% for crypto_description in base_crypto %}
 			<li tabindex="{{ loop.index }}">
       <div>
-					<form class="w3-display-bottomright" method="POST">
-          	<h2>{{ crypto }}</h2>
-          	<p>Select a device and start {{ crypto }} Bot</p>
+					<form class="w3-display-bottomright" method="POST" action="{{ url_for('startbot') }}">
+						<input type="hidden" value="{{ crypto_description[0].trigramme }}" name="cryptoTrigramme">
+						<input type="hidden" value="{{ crypto_description[0].name }}" name="cryptoName">
+	        	<h2>{{ crypto_description[0].name }}</h2>
+          	<p>Select a device and start {{ crypto_description[0].name }} Bot</p>
 						<select class="w3-border w3-button" name="cryptoDevise">
 				 		 <option value="USD">In USD</option>
 				 		 <option value="EUR">In EUR</option>
 				 		 <option value="BTC">In BTC</option>
 						</select>
-					<input class="w3-border w3-button" type="submit" name="bttnInfo"  value="Get Info">
+						<input class="w3-border w3-button" type="submit" name="bttnConfig"  value="Config Bot">
 					</form>
       </div>
 			</li>

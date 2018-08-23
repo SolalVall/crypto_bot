@@ -7,6 +7,7 @@ from flask import Flask, render_template, request, url_for, redirect, jsonify
 
 app = Flask(__name__)
 selected_crypto = Coin()
+base_crypto = [[{'name': 'Bitcoin', 'trigramme': 'BTC'}],[{'name': 'Ethereum', 'trigramme': 'ETH'}],[{'name': 'Litecoin', 'trigramme': 'LTC'}],[{'name': 'Ripple', 'trigramme': 'XRP'}],[{'name': 'EOS', 'trigramme': 'EOS'}]]
 
 @app.route('/', methods=['POST','GET'])
 def index():
@@ -20,7 +21,6 @@ def index():
             
             cryptoInfo = requests.get(selected_crypto.url)
             cryptoInfoJson = cryptoInfo.json()
-            #print cryptoInfoJson
             
             selected_crypto.price = cryptoInfoJson['RAW'][selected_crypto.trigramme][selected_crypto.devise]['PRICE']    
             selected_crypto.openDay = cryptoInfoJson['RAW'][selected_crypto.trigramme][selected_crypto.devise]['OPENDAY']
@@ -31,14 +31,24 @@ def index():
 
             return render_template('index.html', selected_crypto=selected_crypto, error=error)
     else:
-        test = ['Bitcoin','Ethereum','LiteCoin','Ripple','Eos']
-        return render_template('index.html', test=test, error=error)
+        return render_template('index.html', base_crypto=base_crypto, error=error)
 
 @app.route('/startbot', methods=['POST','GET'])
 def startbot():
     error = None
-    if request.method == "POST":
-        #Check if HTML inputs are INT or STRING whit int()
+    selected_crypto.name = request.form['cryptoName']
+    selected_crypto.trigramme = request.form['cryptoTrigramme']
+    selected_crypto.devise = request.form['cryptoDevise']
+    selected_crypto.assign_symbol()
+    selected_crypto.url = 'https://min-api.cryptocompare.com/data/pricemultifull?fsyms=' + selected_crypto.trigramme + '&tsyms=' + selected_crypto.devise
+    return render_template('bot.html', selected_crypto=selected_crypto, error=error)
+
+
+@app.route('/_checkPrice', methods=['GET','POST'])
+def checkPrice():
+    error=None
+    #Check if form was correctly fill in (with INT) 
+    if request.method == 'POST': 
         try:
             selected_crypto.duration = int(request.form['duration'])
             selected_crypto.pourcentageHigh = int(request.form['pourcentageUp'])
@@ -47,15 +57,12 @@ def startbot():
         except ValueError:
             notInt = 'Please you have to enter only numeric values [0-9]'
             return render_template('bot.html', notInt=notInt, selected_crypto=selected_crypto, error=error)
+    #Actualize bot GET request
     else:
-        return render_template('bot.html', selected_crypto=selected_crypto, error=error)
+        selected_crypto.price = selected_crypto.updatedPrice
+        result = selected_crypto.update_price(selected_crypto.url, selected_crypto.trigramme, selected_crypto.devise)
+        return jsonify(result=result, previousPrice=selected_crypto.price)
 
-
-@app.route('/_checkPrice', methods=['GET'])
-def checkPrice():
-    selected_crypto.price = selected_crypto.updatedPrice
-    result = selected_crypto.update_price(selected_crypto.url, selected_crypto.trigramme, selected_crypto.devise)
-    return jsonify(result=result, previousPrice=selected_crypto.price)
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000,debug=True)

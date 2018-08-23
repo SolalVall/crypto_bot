@@ -1,7 +1,7 @@
 {% extends "skeleton.html" %}
 {% block content %}
 	<p class="w3-large">Insert value and start bot for {{ selected_crypto.trigramme }}</p>
-	<form name="runBot" method="POST">
+	<form name="runBot" method="POST" action={{ url_for('checkPrice') }}>
 		 Insert Bot Duration: <input type="text" class="w3-input" name="duration"><br>
 		 Insert Increase Pourcentage: <input type="text" class="w3-input" name="pourcentageUp"><br>
 		 Insert Decrease Pourcentage: <input type="text" class="w3-input" name="pourcentageDown"><br>
@@ -9,7 +9,7 @@
 			{% if notInt %}
 				<p class="w3-large w3-text-red">{{ notInt }}</p>
 			{% endif %}
-			<input type="submit" class="w3-button w3-border"  name="bttnRunBot" value="Run Bot">
+			<input type="submit" class="w3-button w3-border"  name="bttnStartBot" value="Start Bot">
 		</div>
 	</form>
 	<form name="goBack"  action="{{ url_for('index') }}">	
