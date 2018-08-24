@@ -2,33 +2,51 @@
 {% block content %}
 <script type="text/javascript">
 		//play get_price func each 5 secs for updating screen
-		var update_screen = setInterval(get_price,5000);
-
+		var update_screen = setInterval(get_price, {{ selected_crypto.duration }});
+		//var update_screen = setInterval(get_price,5000);
 		// get infos from app.py and api
 		function get_price() {
+			console.log({{selected_crypto.duration}})
   		$.getJSON($SCRIPT_ROOT + '/_checkPrice', function(data) {
-				if(data.previousPrice > data.result){
-  	    	$('#priceUpdated').text('Actual Price: ' + data.result + ' \u21E9');
+				//Update price
+				if(data.previousPrice > data.new_price){
+  	    	$('#priceUpdated').text('Actual Price: ' + data.new_price + ' \u21E9');
 					$('#priceUpdated').css( "color", "red" );
 				}
-				else if(data.previousPrice < data.result){
-  	    	$('#priceUpdated').text('Actual Price: ' + data.result + ' \u21E7');
+				else if(data.previousPrice < data.new_price){
+  	    	$('#priceUpdated').text('Actual Price: ' + data.new_price + ' \u21E7');
 					$('#priceUpdated').css( "color", "green" );
 				}
 				else {
-  	    	$('#priceUpdated').text('Actual Price: ' + data.result + ' =');
+  	    	$('#priceUpdated').text('Actual Price: ' + data.new_price + ' =');
 					$('#priceUpdated').css( "color", "white" );
 				}
 				
+  	    $('#firstPrice').text('When you started {{ selected_crypto.name }} bot, price was at: ' + data.comparePrice[0] + '{{ selected_crypto.devise }}');
+				
+				//Check crypto variation price
+				if(data.variation < 0){
+  	    	$('#variation').text('Variation between First Price and Actual Price: ' + data.variation + ' %');
+					$('#variation').css( "color", "red" );
+				}
+				else if(data.variation > 0){
+  	    	$('#variation').text('Variation between First Price and Actual Price: ' + data.variation + ' %');
+					$('#variation').css( "color", "green" );
+				}
+				else {
+  	    	$('#variation').text('Variation between First Price and Actual Price: ' + data.variation + ' %');
+					$('#variation').css( "color", "white" );
+
+				}
+
   	    console.log(data)
   	  });      
 	}
 </script>
 
 <span id="priceUpdated" class="w3-large">Starting...</span>
-<p>Price of ... when you started the crypto bot</p>
-<p>Actual variation</p>
+<p id="firstPrice"></p>
+<p id="variation"></p>
 <p>Variation pourcentage for buying ...</p>
 <p>Variation pourcentage for selling ...</p>
-<p>Variation pourcentage for buying ...</p>
 {% endblock content %}

@@ -2,7 +2,7 @@
 class Coin:
     import time
     import requests
-    def __init__(self, name=None, trigramme=None, devise=None, url=None, symbol=None,price=None, openDay=None, highDay=None, lowDay=None, marketCap=None, evolutionDay=None, duration=None, pourcentageDown=None, pourcentageUp=None, comparePrice=None, updatedPrice=None):
+    def __init__(self, name=None, trigramme=None, devise=None, url=None, symbol=None,price=None, openDay=None, highDay=None, lowDay=None, marketCap=None, evolutionDay=None, duration=None, pourcentageDown=None, pourcentageUp=None, comparePrice=None, updatedPrice=None, variation_pourcentage=None):
         self.name = name
         self.trigramme = trigramme
         self.devise = devise
@@ -18,6 +18,7 @@ class Coin:
         self.duration = 0 
         self.updatedPrice = 0
         self.comparePrice = []
+        self.variation_pourcentage = 0
 
     def assign_symbol(self):
         if(self.devise == 'USD'):
@@ -26,35 +27,22 @@ class Coin:
             self.symbol = u"\u20AC"
         else:
             self.symbol = self.devise
-    
+
+    def check_duration(self, duration):
+        if(duration < 0):
+            return 'You have to enter a positive value'
+        elif(duration > 0 and duration < 5):
+            return 'The minimal Bot checking duration is 5 seconds'
+        else:
+            return duration * 1000
+
     def update_price(self, url, trigramme, devise):
         apiRequest = self.requests.get(url)
         apiRequestJson = apiRequest.json()
         self.updatedPrice = apiRequestJson['RAW'][trigramme][devise]['PRICE']
         return self.updatedPrice
 
-  #  def price_variation(self, updatedPrice):
- #       self.comparePrice.append(updatedPrice)
-#
-#        if(len(self.comparePrice) > 1):
-#       variation_pourcentage = (float(array_eth_price[-1]-array_eth_price[0])/float(array_eth_price[0]))*100
-#       
-#       if(timer < max_duration and variation_pourcentage > float(increase_pourcentage)):
-#           print ("\nHAUSSE DE %.4f\n" % variation_pourcentage)
-#           print 'the first price was : ' + str(array_eth_price[0])
-#           print 'the last price is : ' + str(array_eth_price[-1])
-#           print array_eth_buy_price   
-#           array_eth_buy_price.append(array_eth_price[-1])
-#           array_eth_sell_price = []
-#           array_eth_price = []
-#           timer = 0
-#   
-#       elif(timer < max_duration and variation_pourcentage < float(decrease_pourcentage)):
-#           print ("BAISSE DE %.4f\n" % variation_pourcentage)
-#           print 'the first price was : ' + str(array_eth_price[0])
-#           print 'the last price is : ' + str(array_eth_price[-1])
-#           print array_eth_sell_price  
-#           array_eth_sell_price.append(array_eth_price[-1])
-#           array_eth_buy_price = []
-#           array_eth_price = []
-#           timer = 0
+    def price_variation(self, comparePrice):
+        self.variation_pourcentage = (float(comparePrice[-1]-comparePrice[0])/float(comparePrice[0]))*100
+        return self.variation_pourcentage
+       

@@ -47,60 +47,31 @@ def startbot():
 @app.route('/_checkPrice', methods=['GET','POST'])
 def checkPrice():
     error=None
-    #Check if form was correctly fill in (with INT) 
+    #Receive form and check if it was correctly fill in (with INT) 
     if request.method == 'POST': 
         try:
-            selected_crypto.duration = int(request.form['duration'])
-            selected_crypto.pourcentageHigh = int(request.form['pourcentageUp'])
-            selected_crypto.pourcentageLow = int(request.form['pourcentageDown'])
-            return render_template('checkPrice.html', selected_crypto=selected_crypto, error=error)
+            check_duration = selected_crypto.check_duration(int(request.form['duration']))
+            #If duration is a perso str render an error message to  the user
+            if type(check_duration) == str:
+                return render_template('bot.html', notInt=check_duration, selected_crypto=selected_crypto, error=error)
+            else:
+                selected_crypto.duration = check_duration
+                selected_crypto.pourcentageHigh = int(request.form['pourcentageUp'])
+                selected_crypto.pourcentageLow = int(request.form['pourcentageDown'])
+                return render_template('checkPrice.html', selected_crypto=selected_crypto, error=error)
         except ValueError:
             notInt = 'Please you have to enter only numeric values [0-9]'
             return render_template('bot.html', notInt=notInt, selected_crypto=selected_crypto, error=error)
     #Actualize bot GET request
     else:
         selected_crypto.price = selected_crypto.updatedPrice
-        result = selected_crypto.update_price(selected_crypto.url, selected_crypto.trigramme, selected_crypto.devise)
-        return jsonify(result=result, previousPrice=selected_crypto.price)
+        new_price = selected_crypto.update_price(selected_crypto.url, selected_crypto.trigramme, selected_crypto.devise)
+        selected_crypto.comparePrice.append(new_price)
+        if(len(selected_crypto.comparePrice) > 1):
+            variation = selected_crypto.price_variation(selected_crypto.comparePrice)
+
+        return jsonify(new_price=new_price, previousPrice=selected_crypto.price, comparePrice=selected_crypto.comparePrice, variation=variation)
 
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000,debug=True)
-
-#url = 'https://min-api.cryptocompare.com/data/price?fsym=ETH&tsyms=EUR'
-#array_eth_price = [] 
-#array_eth_buy_price = []
-#array_eth_sell_price = []
-#timer = 0
-#increase_pourcentage = 0.02
-#decrease_pourcentage = -0.02
-#max_duration = 3600
-#
-#while True:
-#	time.sleep(5)
-#	timer += 5
-#	r = requests.get(url).json()
-#	array_eth_price.append(r[selected_crypto.devise])
-#	
-#	if(len(array_eth_price) > 1):
-#		variation_pourcentage = (float(array_eth_price[-1]-array_eth_price[0])/float(array_eth_price[0]))*100
-#		
-#		if(timer < max_duration and variation_pourcentage > float(increase_pourcentage)):
-#			print ("\nHAUSSE DE %.4f\n" % variation_pourcentage)
-#			print 'the first price was : ' + str(array_eth_price[0])
-#			print 'the last price is : ' + str(array_eth_price[-1])
-#			print array_eth_buy_price	
-#			array_eth_buy_price.append(array_eth_price[-1])
-#			array_eth_sell_price = []
-#			array_eth_price = []
-#			timer = 0
-#	
-#		elif(timer < max_duration and variation_pourcentage < float(decrease_pourcentage)):
-#			print ("BAISSE DE %.4f\n" % variation_pourcentage)
-#			print 'the first price was : ' + str(array_eth_price[0])
-#			print 'the last price is : ' + str(array_eth_price[-1])
-#			print array_eth_sell_price	
-#			array_eth_sell_price.append(array_eth_price[-1])
-#			array_eth_buy_price = []
-#			array_eth_price = []
-#			timer = 0
