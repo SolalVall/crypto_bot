@@ -68,14 +68,16 @@ def register():
             password = request.form['password']
             
             #Init User class and add it to mongodb
-            cryptobot_user = User(username, password, email)
-            test = mongo.create_user(cryptobot_user)
-            if test:
-                return render_template('login.html', error=error, test=test)
+            cryptobot_user = User(username, email, password)
+            error_register = mongo.create_user(cryptobot_user)
+
+            #If Register form is incomplete/incorrect
+            if error_register:
+                return render_template('register.html', error=error, error_register=error_register)
             else:
-                return render_template('login.html', error=error)
+                return render_template('register.html', error=error)
     else:
-        return render_template('login.html', error=error)
+        return render_template('register.html', error=error)
 
 @app.route('/startbot', methods=['POST','GET'])
 def startbot():
