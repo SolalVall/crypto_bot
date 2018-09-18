@@ -1,8 +1,8 @@
 {% extends "skeleton.html" %}
 {% block content %}
 	{% if error_register %}
+			<span style="color:red" id="priceUpdated" class="w3-large w3-center">{{ error_register }}</span><br>
 			<form name="loginForm" method="POST">
-				<span style="color:red" id="priceUpdated" class="w3-large w3-center">{{ error_register }}</span><br>
 				Username: <input type="text" class="w3-input" name="username"><br>
 				Email: <input type="text" class="w3-input" name="email"><br>
   		  Password: <input type="password" class="w3-input" name="password"><br>
