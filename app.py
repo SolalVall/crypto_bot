@@ -66,11 +66,11 @@ def login():
             username = request.form['username']
             email = request.form['email']
             password = request.form['password']
+            
+            #Init User class and add it to mongodb
             cryptobot_user = User(username, password, email)
-            print username
-            print email
-            print password
             mongo.create_user(cryptobot_user)
+
             return render_template('login.html', error=error)
     else:
         return render_template('login.html', error=error)

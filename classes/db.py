@@ -12,5 +12,5 @@ class Database:
     def create_user(self, user):
         new_user = {"username": user.name,
                     "email": user.email,
-                    "password": user.password}
+                    "password": user.password_hashed}
         self.new_user_id = self.cryptobot_users.insert_one(new_user).inserted_id 
