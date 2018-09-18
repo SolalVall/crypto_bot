@@ -2,16 +2,24 @@
 import requests
 import json
 import time
+import sys
 from flask_login import LoginManager
-from coin import Coin
 from flask import Flask, render_template, request, url_for, redirect, jsonify
 
-app = Flask(__name__)
-#Load flask login Class
-login_manager = LoginManager()
-#load app inside flask login
-login_manager.init_app(app)
+#Import class from classes folder
+sys.path.insert(0, 'classes')
+from coin import Coin
+from db import Database
+from user import User
 
+app = Flask(__name__)
+
+#Load flask login Class
+#login_manager = LoginManager()
+#load app inside flask login
+#login_manager.init_app(app)
+
+mongo = Database()
 selected_crypto = Coin()
 base_crypto = [[{'name': 'Bitcoin', 'trigramme': 'BTC'}],[{'name': 'Ethereum', 'trigramme': 'ETH'}],[{'name': 'Litecoin', 'trigramme': 'LTC'}],[{'name': 'Ripple', 'trigramme': 'XRP'}],[{'name': 'EOS', 'trigramme': 'EOS'}]]
 
@@ -41,18 +49,31 @@ def index():
 
 @app.route('/login', methods=['POST','GET'])
 def login():
-    form = request.form['loginForm']
-    if form.validate_on_submit():
-        login_user(user)
+    #form = request.form['loginForm']
+    #if form.validate_on_submit():
+    #    login_user(user)
 
-        flask.flash('Logged in successfully.')
+    #    flask.flash('Logged in successfully.')
 
-        next = flask.request.args.get('next')
-        if not is_safe_url(next):
-            return flask.abort(400)
+    #    next = flask.request.args.get('next')
+    #    if not is_safe_url(next):
+    #        return flask.abort(400)
 
-        return flask.redirect(next or flask.url_for('index'))
-    return flask.render_template('login.html', form=form)
+    #    return flask.redirect(next or flask.url_for('index'))
+    error = None
+    if request.method == 'POST':
+        if request.form['validate'] == 'Create Account':
+            username = request.form['username']
+            email = request.form['email']
+            password = request.form['password']
+            cryptobot_user = User(username, password, email)
+            print username
+            print email
+            print password
+            mongo.create_user(cryptobot_user)
+            return render_template('login.html', error=error)
+    else:
+        return render_template('login.html', error=error)
 
 @app.route('/startbot', methods=['POST','GET'])
 def startbot():
