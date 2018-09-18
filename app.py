@@ -47,8 +47,8 @@ def index():
     else:
         return render_template('index.html', base_crypto=base_crypto, error=error)
 
-@app.route('/login', methods=['POST','GET'])
-def login():
+@app.route('/register', methods=['POST','GET'])
+def register():
     #form = request.form['loginForm']
     #if form.validate_on_submit():
     #    login_user(user)
@@ -69,9 +69,11 @@ def login():
             
             #Init User class and add it to mongodb
             cryptobot_user = User(username, password, email)
-            mongo.create_user(cryptobot_user)
-
-            return render_template('login.html', error=error)
+            test = mongo.create_user(cryptobot_user)
+            if test:
+                return render_template('login.html', error=error, test=test)
+            else:
+                return render_template('login.html', error=error)
     else:
         return render_template('login.html', error=error)
 

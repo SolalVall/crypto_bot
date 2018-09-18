@@ -8,9 +8,16 @@ class Database:
         self.db = self.client.cryptobot_database
         #Create collection
         self.cryptobot_users = self.db.cryptobot_users
+	
+   # def signup(self):
 
     def create_user(self, user):
-        new_user = {"username": user.name,
-                    "email": user.email,
-                    "password": user.password_hashed}
-        self.new_user_id = self.cryptobot_users.insert_one(new_user).inserted_id 
+        errorMessage = ""
+        if user.name == "":
+            errorMessage = "You have to set a username"
+            return errorMessage
+        else:
+            new_user = {"username": user.name,
+                        "email": user.email,
+                        "password": user.password_hashed}
+            self.new_user_id = self.cryptobot_users.insert_one(new_user).inserted_id 
