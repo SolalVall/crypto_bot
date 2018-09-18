@@ -1,61 +1,13 @@
 {% extends "skeleton.html" %}
-{% block content %}	
-<div class="accordion">
-  <ul>
-   <!--<li tabindex="0">
-      <div>
-					<form class="w3-display-bottomright" method="POST">
-          <h2>Bitcoin</h2>
-          <p>Select a device and start Bitcoin Bot</p>
-						<select class="w3-border w3-button" name="cryptoDevise">
-				 		 <option value="USD">In USD</option>
-				 		 <option value="EUR">In EUR</option>
-				 		 <option value="BTC">In BTC</option>
-						</select>
-					<input class="w3-border w3-button" type="submit" name="bttnInfo"  value="Get Info">
-					</form>
-      </div>
-		</li>-->
-		{% for crypto_description in base_crypto %}
-			<li tabindex="{{ loop.index }}">
-      <div>
-					<form class="w3-display-bottomright" method="POST" action="{{ url_for('startbot') }}">
-						<input type="hidden" value="{{ crypto_description[0].trigramme }}" name="cryptoTrigramme">
-						<input type="hidden" value="{{ crypto_description[0].name }}" name="cryptoName">
-	        	<h2>{{ crypto_description[0].name }}</h2>
-          	<p>Select a device and start {{ crypto_description[0].name }} Bot</p>
-						<select class="w3-border w3-button" name="cryptoDevise">
-				 		 <option value="USD">In USD</option>
-				 		 <option value="EUR">In EUR</option>
-				 		 <option value="BTC">In BTC</option>
-						</select>
-						<input class="w3-border w3-button" type="submit" name="bttnConfig"  value="Config Bot">
-					</form>
-      </div>
-			</li>
-		{% endfor %}
-</div>
-<form class="w3-large w3-center" method="POST">
-					<select class="w3-border w3-button" name="cryptoTrigramme">
-				 	 <option value="ETH">Ethereum "ETH"</option>
-				 	 <option value="BTC">Bitcoin "BTC"</option>
-				 	 <option value="XRP">Ripple "XRP"</option>
-				 	 <option value="LTC">Litecoin "LTC"</option>
-				 	 <option value="TRX">Tron "TRX"</option>
-					</select>
-					<select class="w3-border w3-button" name="cryptoDevise">
-				 	 <option value="USD">In USD</option>
-				 	 <option value="EUR">In EUR</option>
-				 	 <option value="BTC">In BTC</option>
-					</select>
-					<input class="w3-border w3-button" type="submit" name="bttnInfo"  value="Get Info">
-				</form>
-			{% if selected_crypto %}
-					{% include 'info.html' %}
-			{% endif %}
-<div>
-	<form class="w3-display-bottomright" method="GET" action="{{ url_for('register') }}">
-		<input class="w3-border w3-button" type="submit" name="bttnLogin"  value="Register">
-	</form>
-</div>
-{% endblock content%}
+{% block content %}
+	<div class="w3-center w3-animate-bottom">
+		<div class="w3-bar">
+			<form method="GET" class="w3-bar-item" action="{{ url_for('register') }}">
+				<input class="w3-border w3-large w3-button" type="submit" name="bttnRegister"  value="Register">
+			</form>
+			<form method="GET" class="w3-bar-item" action="{{ url_for('login') }}">
+				<input class="w3-border w3-large w3-button" type="submit" name="bttnLogin"  value="Login">
+			</form>
+		</div>
+	</div>
+{% endblock content %}

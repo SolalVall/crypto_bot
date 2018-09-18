@@ -1,0 +1,15 @@
+{% extends "skeleton.html" %}
+{% block content %}
+		<form name="loginForm" method="POST">
+			Username: <input type="text" class="w3-input" name="username"><br>
+  	  Password: <input type="password" class="w3-input" name="password"><br>
+			<div class="w3-animate-bottom" style="text-align:center">
+  	  	<input type="submit" class="w3-button w3-large w3-border" name="connection" value="Connect"><br>
+			</div>
+		</form>
+		<form name="goBack"  action="{{ url_for('index') }}">
+			<div class="w3-animate-bottom" style="text-align:center">
+				<input type="submit" class="w3-button w3-large w3-border" name="goBack" value="Go Back >">
+			</div>
+		</form>
+{% endblock content %}

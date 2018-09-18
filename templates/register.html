@@ -2,18 +2,25 @@
 {% block content %}
 	{% if error_register %}
 			<span style="color:red" id="priceUpdated" class="w3-large w3-center">{{ error_register }}</span><br>
-			<form name="loginForm" method="POST">
+			<form name="registerForm" method="POST">
 				Username: <input type="text" class="w3-input" name="username"><br>
 				Email: <input type="text" class="w3-input" name="email"><br>
   		  Password: <input type="password" class="w3-input" name="password"><br>
-  		  <input type="submit" class="w3-input" name="validate" value="Create Account"><br>
+  		  <input type="submit" class="w3-button w3-border" name="validate" value="Create Account"><br>
 			</form>
 	{% elif not error_register %}
-		<form name="loginForm" method="POST">
+		<form name="registerForm" method="POST">
 			Username: <input type="text" class="w3-input" name="username"><br>
 			Email: <input type="text" class="w3-input" name="email"><br>
   	  Password: <input type="password" class="w3-input" name="password"><br>
-  	  <input type="submit" class="w3-input" name="validate" value="Create Account"><br>
+			<div class="w3-animate-bottom" style="text-align:center">
+  	  	<input type="submit" class="w3-button w3-large w3-border" name="validate" value="Create Account"><br>
+			</div>
+		</form>
+		<form name="goBack"  action="{{ url_for('index') }}">
+			<div class="w3-animate-bottom" style="text-align:center">
+				<input type="submit" class="w3-button w3-large w3-border" name="goBack" value="Go Back >">
+			</div>
 		</form>
 	{% endif %}
 {% endblock content %}

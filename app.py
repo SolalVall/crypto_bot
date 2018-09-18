@@ -15,9 +15,9 @@ from user import User
 app = Flask(__name__)
 
 #Load flask login Class
-#login_manager = LoginManager()
+login_manager = LoginManager()
 #load app inside flask login
-#login_manager.init_app(app)
+login_manager.init_app(app)
 
 mongo = Database()
 selected_crypto = Coin()
@@ -26,40 +26,32 @@ base_crypto = [[{'name': 'Bitcoin', 'trigramme': 'BTC'}],[{'name': 'Ethereum', '
 @app.route('/', methods=['POST','GET'])
 def index():
     error = None
-    if request.method == 'POST':
-        if request.form['bttnInfo'] == 'Get Info':
-            selected_crypto.trigramme = request.form['cryptoTrigramme']
-            selected_crypto.devise = request.form['cryptoDevise']
-            selected_crypto.assign_symbol()
-            selected_crypto.url = 'https://min-api.cryptocompare.com/data/pricemultifull?fsyms=' + selected_crypto.trigramme + '&tsyms=' + selected_crypto.devise
-            
-            cryptoInfo = requests.get(selected_crypto.url)
-            cryptoInfoJson = cryptoInfo.json()
-            
-            selected_crypto.price = cryptoInfoJson['RAW'][selected_crypto.trigramme][selected_crypto.devise]['PRICE']    
-            selected_crypto.openDay = cryptoInfoJson['RAW'][selected_crypto.trigramme][selected_crypto.devise]['OPENDAY']
-            selected_crypto.highDay = cryptoInfoJson['RAW'][selected_crypto.trigramme][selected_crypto.devise]['HIGHDAY'] 
-            selected_crypto.lowDay = cryptoInfoJson['RAW'][selected_crypto.trigramme][selected_crypto.devise]['LOWDAY']
-            selected_crypto.marketCap = cryptoInfoJson['RAW'][selected_crypto.trigramme][selected_crypto.devise]['MKTCAP'] 
-            selected_crypto.evolutionDay = cryptoInfoJson['RAW'][selected_crypto.trigramme][selected_crypto.devise]['CHANGEPCTDAY']
-
-            return render_template('index.html', selected_crypto=selected_crypto, error=error)
-    else:
-        return render_template('index.html', base_crypto=base_crypto, error=error)
+    return render_template('index.html', error=error)
+#def index():
+#    error = None
+#    if request.method == 'POST':
+#        if request.form['bttnInfo'] == 'Get Info':
+#            selected_crypto.trigramme = request.form['cryptoTrigramme']
+#            selected_crypto.devise = request.form['cryptoDevise']
+#            selected_crypto.assign_symbol()
+#            selected_crypto.url = 'https://min-api.cryptocompare.com/data/pricemultifull?fsyms=' + selected_crypto.trigramme + '&tsyms=' + selected_crypto.devise
+#            
+#            cryptoInfo = requests.get(selected_crypto.url)
+#            cryptoInfoJson = cryptoInfo.json()
+#            
+#            selected_crypto.price = cryptoInfoJson['RAW'][selected_crypto.trigramme][selected_crypto.devise]['PRICE']    
+#            selected_crypto.openDay = cryptoInfoJson['RAW'][selected_crypto.trigramme][selected_crypto.devise]['OPENDAY']
+#            selected_crypto.highDay = cryptoInfoJson['RAW'][selected_crypto.trigramme][selected_crypto.devise]['HIGHDAY'] 
+#            selected_crypto.lowDay = cryptoInfoJson['RAW'][selected_crypto.trigramme][selected_crypto.devise]['LOWDAY']
+#            selected_crypto.marketCap = cryptoInfoJson['RAW'][selected_crypto.trigramme][selected_crypto.devise]['MKTCAP'] 
+#            selected_crypto.evolutionDay = cryptoInfoJson['RAW'][selected_crypto.trigramme][selected_crypto.devise]['CHANGEPCTDAY']
+#
+#            return render_template('index.html', selected_crypto=selected_crypto, error=error)
+#    else:
+#        return render_template('index.html', base_crypto=base_crypto, error=error)
 
 @app.route('/register', methods=['POST','GET'])
 def register():
-    #form = request.form['loginForm']
-    #if form.validate_on_submit():
-    #    login_user(user)
-
-    #    flask.flash('Logged in successfully.')
-
-    #    next = flask.request.args.get('next')
-    #    if not is_safe_url(next):
-    #        return flask.abort(400)
-
-    #    return flask.redirect(next or flask.url_for('index'))
     error = None
     if request.method == 'POST':
         if request.form['validate'] == 'Create Account':
@@ -78,6 +70,15 @@ def register():
                 return render_template('register.html', error=error)
     else:
         return render_template('register.html', error=error)
+
+@login_manager.user_loader
+def load_user(user_id):
+    return User.get(user_id)
+
+@app.route('/login', methods=['POST','GET'])
+def login():
+    error = None
+    return render_template('login.html', error=error)
 
 @app.route('/startbot', methods=['POST','GET'])
 def startbot():

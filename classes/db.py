@@ -14,7 +14,6 @@ class Database:
         #Verify register form
         #Iterate over attributes of User Object (check empty field)
         for attribute, value in user.__dict__.iteritems():
-            print attribute, value
             if value == "" :
                 errorMessage = "Please insert a value for " + attribute
                 return errorMessage
@@ -37,5 +36,6 @@ class Database:
         else:
             new_user = {"username": user.username,
                         "email": user.email,
-                        "password": user.password}
+                        "password": user.password,
+                        "authenticated": user.authenticated}
             self.new_user_id = self.cryptobot_users.insert_one(new_user).inserted_id 
