@@ -9,15 +9,17 @@ class Database:
         #Create collection
         self.cryptobot_users = self.db.cryptobot_users
 	
-   # def signup(self):
-
     def create_user(self, user):
-        errorMessage = ""
-        if user.name == "":
-            errorMessage = "You have to set a username"
-            return errorMessage
+        #Verify register form
+        #Iterate over attributes of User Object
+        for attribute, value in user.__dict__.iteritems():
+            print attribute, value
+            if value == "" :
+                errorMessage = "Please insert a value for " + attribute
+                return errorMessage
         else:
-            new_user = {"username": user.name,
+            #Add user to db
+            new_user = {"username": user.username,
                         "email": user.email,
-                        "password": user.password_hashed}
+                        "password": user.password}
             self.new_user_id = self.cryptobot_users.insert_one(new_user).inserted_id 
