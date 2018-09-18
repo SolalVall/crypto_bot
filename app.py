@@ -2,10 +2,16 @@
 import requests
 import json
 import time
+from flask_login import LoginManager
 from coin import Coin
 from flask import Flask, render_template, request, url_for, redirect, jsonify
 
 app = Flask(__name__)
+#Load flask login Class
+login_manager = LoginManager()
+#load app inside flask login
+login_manager.init_app(app)
+
 selected_crypto = Coin()
 base_crypto = [[{'name': 'Bitcoin', 'trigramme': 'BTC'}],[{'name': 'Ethereum', 'trigramme': 'ETH'}],[{'name': 'Litecoin', 'trigramme': 'LTC'}],[{'name': 'Ripple', 'trigramme': 'XRP'}],[{'name': 'EOS', 'trigramme': 'EOS'}]]
 
@@ -32,6 +38,21 @@ def index():
             return render_template('index.html', selected_crypto=selected_crypto, error=error)
     else:
         return render_template('index.html', base_crypto=base_crypto, error=error)
+
+@app.route('/login', methods=['POST','GET'])
+def login():
+    form = LoginForm()
+    if form.validate_on_submit():
+        login_user(user)
+
+        flask.flash('Logged in successfully.')
+
+        next = flask.request.args.get('next')
+        if not is_safe_url(next):
+            return flask.abort(400)
+
+        return flask.redirect(next or flask.url_for('index'))
+    return flask.render_template('login.html', form=form)
 
 @app.route('/startbot', methods=['POST','GET'])
 def startbot():

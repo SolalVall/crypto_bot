@@ -2,7 +2,7 @@
 {% block content %}	
 <div class="accordion">
   <ul>
-   <li tabindex="0">
+   <!--<li tabindex="0">
       <div>
 					<form class="w3-display-bottomright" method="POST">
           <h2>Bitcoin</h2>
@@ -15,7 +15,7 @@
 					<input class="w3-border w3-button" type="submit" name="bttnInfo"  value="Get Info">
 					</form>
       </div>
-		</li>
+		</li>-->
 		{% for crypto_description in base_crypto %}
 			<li tabindex="{{ loop.index }}">
       <div>
@@ -53,4 +53,9 @@
 			{% if selected_crypto %}
 					{% include 'info.html' %}
 			{% endif %}
+<div>
+	<form class="w3-display-bottomright" method="POST" action="{{ url_for('login') }}">
+		<input class="w3-border w3-button" type="submit" name="bttnLogin"  value="Register">
+	</form>
+</div>
 {% endblock content%}

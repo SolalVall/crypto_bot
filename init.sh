@@ -1,6 +1,6 @@
 #!/bin/bash
 pipExist=$(which pip)
-packagesExists=$( pip list | grep 'Flask\|requests' )
+packagesExists=$( pip list | grep '^Flask *[0-9].*$\|requests\|Flask-Login\|Flask-PyMongo' )
 
 echo -e "\n------------------------CHECK NECESSARY PACKAGES--------------------------\n"
 
@@ -21,7 +21,7 @@ fi
 if [ -z "$packagesExists" ]
 then
 	echo -e "\nPackages are not installed"
-	sudo pip install Flask requests
+	sudo pip install Flask requests Flask-Login Flask-PyMongo
 else
 	echo -e "\nPackages are already installed:\n"
 	echo -e "$packagesExists \n"
