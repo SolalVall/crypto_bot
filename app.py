@@ -41,7 +41,7 @@ def index():
 
 @app.route('/login', methods=['POST','GET'])
 def login():
-    form = LoginForm()
+    form = request.form['loginForm']
     if form.validate_on_submit():
         login_user(user)
 
