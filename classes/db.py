@@ -1,7 +1,7 @@
 import re
 import pprint
 from werkzeug.security import generate_password_hash, check_password_hash
-
+from user import User
 class Database:
     from pymongo import MongoClient
 
@@ -43,16 +43,26 @@ class Database:
                         "authenticated": user.authenticated}
             self.new_user_id = self.cryptobot_users.insert_one(new_user).inserted_id 
 
+    def get_user(self, user_id):
+        get_user = self.cryptobot_users.find_one({"email": user_id})
+        user_infos = User(get_user['username'], get_user['email'])
+        user_infos.authenticated = get_user['authenticated']
+        return user_infos
+
     def verify_user(self, pseudo, password_inserted):
         #Check in DB if pseudo exist and check creds if true
-        user = self.cryptobot_users.find_one({"username": pseudo})
-        if user is None:
+        get_user = self.cryptobot_users.find_one({"username": pseudo})
+        if get_user is None:
             errorMessage = "This username doesn't exist !" 
             return errorMessage
         else:
-            password_check = check_password_hash(user['password'], password_inserted)
+            password_check = check_password_hash(get_user['password'], password_inserted)
+            #If password is OK return a user instance
             if password_check is True:
-                return user
+                self.cryptobot_users.find_and_modify(query={'username': pseudo}, update={"$set": {'authenticated': True}}, upsert=False, full_response= True)
+                user_infos = User(get_user['username'], get_user['email'])
+                user_infos.authenticated = True
+                return user_infos
             else:
                 errorMessage = "Password is not correct Dude !"
                 return errorMessage

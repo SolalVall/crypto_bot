@@ -2,14 +2,16 @@ from werkzeug.security import generate_password_hash, check_password_hash
 
 class User:
 
-    def __init__(self, name, email, password):
+    def __init__(self, name, email, password=None): 
         self.username = name
         self.email = email
         self.authenticated = False
-        if password != "":
-            self.hash_password(password)
-        else:
+
+        #Check if class is istanciate with password argument or if a user give a blank password
+        if password == "" or password is None:
             self.password = password
+        else:
+            self.hash_password(password)
 
     def hash_password(self, password):
         self.password = generate_password_hash(password)

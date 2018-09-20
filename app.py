@@ -2,9 +2,10 @@
 import requests
 import json
 import time
+import os
 import sys
-from flask_login import LoginManager
-from flask import Flask, render_template, request, url_for, redirect, jsonify
+from flask_login import LoginManager, login_user
+from flask import Flask, render_template, session, request, url_for, redirect, jsonify, flash
 
 #Import class from classes folder
 sys.path.insert(0, 'classes')
@@ -14,6 +15,10 @@ from user import User
 
 app = Flask(__name__)
 
+#Configure session, SECRET_KEY secure cookies by cipher them
+app.config['SESSION_TYPE'] = 'mongodb'
+app.config['SECRET_KEY'] = os.urandom(15)
+
 #Load flask login Class
 login_manager = LoginManager()
 #load app inside flask login
@@ -22,6 +27,12 @@ login_manager.init_app(app)
 mongo = Database()
 selected_crypto = Coin()
 base_crypto = [[{'name': 'Bitcoin', 'trigramme': 'BTC'}],[{'name': 'Ethereum', 'trigramme': 'ETH'}],[{'name': 'Litecoin', 'trigramme': 'LTC'}],[{'name': 'Ripple', 'trigramme': 'XRP'}],[{'name': 'EOS', 'trigramme': 'EOS'}]]
+
+#Callback from flask-login who reload the User object with his unique ID (here it's the email)
+@login_manager.user_loader
+def load_user(user_id):
+    print user_id
+    return mongo.get_user(user_id)
 
 @app.route('/', methods=['POST','GET'])
 def index():
@@ -71,9 +82,6 @@ def register():
     else:
         return render_template('register.html', error=error)
 
-@login_manager.user_loader
-def load_user(user_id):
-    return User.get(user_id)
 
 @app.route('/login', methods=['POST','GET'])
 def login():
@@ -83,12 +91,16 @@ def login():
             pseudo = request.form['username']
             password = request.form['password']
 
+            #Check if password is correct
             check_login = mongo.verify_user(pseudo, password)
             #If infos received from database is a string it's an error
             if type(check_login) == str:
                 return render_template('login.html', error=error, check_login=check_login)
             else:
-                return redirect('/')
+                print check_login.is_authenticated()
+                #Method from flask-login who log a user in
+                login_user(check_login)
+                return redirect(url_for('index'))
     return render_template('login.html', error=error)
 
 @app.route('/startbot', methods=['POST','GET'])
