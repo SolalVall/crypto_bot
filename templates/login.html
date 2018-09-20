@@ -1,5 +1,8 @@
 {% extends "skeleton.html" %}
 {% block content %}
+		{% if check_login %}
+		<span style="color:red" id="priceUpdated" class="w3-large w3-center">{{ check_login }}</span>
+		{% endif %}
 		<form name="loginForm" method="POST">
 			Username: <input type="text" class="w3-input" name="username"><br>
   	  Password: <input type="password" class="w3-input" name="password"><br>

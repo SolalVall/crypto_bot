@@ -78,6 +78,17 @@ def load_user(user_id):
 @app.route('/login', methods=['POST','GET'])
 def login():
     error = None
+    if request.method == 'POST':
+        if request.form['connection'] == 'Connect':
+            pseudo = request.form['username']
+            password = request.form['password']
+
+            check_login = mongo.verify_user(pseudo, password)
+            #If infos received from database is a string it's an error
+            if type(check_login) == str:
+                return render_template('login.html', error=error, check_login=check_login)
+            else:
+                return redirect('/')
     return render_template('login.html', error=error)
 
 @app.route('/startbot', methods=['POST','GET'])

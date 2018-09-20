@@ -14,6 +14,9 @@ class User:
     def hash_password(self, password):
         self.password = generate_password_hash(password)
 
+    def check_password(self, password_hashed, password_inserted):
+        return check_password_hash(password_hashed, password_inserted)
+
     def is_active(self):
         return True
 

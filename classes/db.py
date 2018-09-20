@@ -1,4 +1,7 @@
 import re
+import pprint
+from werkzeug.security import generate_password_hash, check_password_hash
+
 class Database:
     from pymongo import MongoClient
 
@@ -39,3 +42,17 @@ class Database:
                         "password": user.password,
                         "authenticated": user.authenticated}
             self.new_user_id = self.cryptobot_users.insert_one(new_user).inserted_id 
+
+    def verify_user(self, pseudo, password_inserted):
+        #Check in DB if pseudo exist and check creds if true
+        user = self.cryptobot_users.find_one({"username": pseudo})
+        if user is None:
+            errorMessage = "This username doesn't exist !" 
+            return errorMessage
+        else:
+            password_check = check_password_hash(user['password'], password_inserted)
+            if password_check is True:
+                return user
+            else:
+                errorMessage = "Password is not correct Dude !"
+                return errorMessage
