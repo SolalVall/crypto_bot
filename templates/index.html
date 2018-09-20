@@ -2,17 +2,12 @@
 {% block content %}
 	<div class="w3-center w3-animate-bottom">
 		<div class="w3-bar">
+			{# current_user object is a basic object available in template (refer to flask-login doc)#}
 			{% if current_user.is_authenticated %}
-				<p>Hi {{ current_user.username }}</p>
+				<p class="w3-xlarge w3-green">Welcome {{ current_user.username }}!</p>
 			{% else %}
-				<p>nop</p>
+				<p class="w3-xlarge">Enter in an Automatised Crypto World</p>
 			{% endif %}
-			<form method="GET" class="w3-bar-item" action="{{ url_for('register') }}">
-				<input class="w3-border w3-large w3-button" type="submit" name="bttnRegister"  value="Register">
-			</form>
-			<form method="GET" class="w3-bar-item" action="{{ url_for('login') }}">
-				<input class="w3-border w3-large w3-button" type="submit" name="bttnLogin"  value="Login">
-			</form>
 		</div>
 	</div>
 {% endblock content %}

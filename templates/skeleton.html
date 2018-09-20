@@ -28,8 +28,30 @@
 		<source src=https://static.videezy.com/system/resources/previews/000/007/313/original/Plexus.mp4 type=video/mp4>
 	</video>
   <div class="bgimg w3-display-container w3-animate-opacity w3-text-white">
+		<div class="w3-bar w3-display-topright">
+			<form method="GET" action="{{ url_for('register')}}" class="w3-bar-item w3-right w3-padding-16">
+				<input name="bttnRegister" value="Register" class="w3-border w3-large  w3-button" style="border-radius: 22px" type="submit">
+			</form>
+			<form method="GET" action="{{ url_for('login')}}" class="w3-bar-item w3-right w3-padding-16">
+				<input name="bttnLogin" value="Log In" class="w3-border w3-large  w3-button" style="border-radius: 22px" type="submit">
+			</form>
+  	</div>
     <div class="w3-display-topleft w3-padding-large w3-xlarge">
-      Zyker
+			<a class="w3-right w3-padding" href="https://github.com/SolalVall">
+				<img style="height:25;width:25" src="https://proxy.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.iconsdb.com%2Ficons%2Fpreview%2Fwhite%2Fgithub-6-xxl.png&f=1">
+			</a>
+			<a class="w3-right w3-padding w3-margin-left" href="https://twitter.com/JustSolal">
+				<img style="height:25;width:25" src="https://proxy.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.iconsdb.com%2Ficons%2Fdownload%2Fwhite%2Ftwitter-512.gif&f=1">
+			</a>
+			<img class="w3-left" style="height:45;width:45" src="https://proxy.duckduckgo.com/iu/?u=http%3A%2F%2Fwww.valuecharts.com%2Fimages%2Facademy%2FLive-Trade-Room-Icon-White.png&f=1">
+      <span class="w3-margin-left w3-xLarge">Zyker |</span>
+			<form method="GET" action="{{ url_for('login')}}" class="w3-bar-item w3-right">
+				<input name="bttnLogin" value="Overview" class="w3-large  w3-button" style="border-radius: 22px" type="submit">
+			</form>
+			<form method="GET" action="{{ url_for('login')}}" class="w3-bar-item w3-right">
+				<input name="bttnLogin" value="Getting Started" class=" w3-large  w3-button" style="border-radius: 22px" type="submit">
+			</form>
+			</a> 
     </div>
     <div class="w3-display-middle">
       <h1 class="w3-jumbo w3-animate-top">CRYPTO BOT</h1>
