@@ -40,7 +40,7 @@ class Database:
             new_user = {"username": user.username,
                         "email": user.email,
                         "password": user.password,
-                        "authenticated": user.authenticated}
+                        "authenticated": True}
             self.new_user_id = self.cryptobot_users.insert_one(new_user).inserted_id 
 
     def get_user(self, user_id):

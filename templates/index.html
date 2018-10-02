@@ -1,13 +1,17 @@
 {% extends "skeleton.html" %}
 {% block content %}
-	<div class="w3-center w3-animate-bottom">
-		<div class="w3-bar">
-			{# current_user object is a basic object available in template (refer to flask-login doc)#}
-			{% if current_user.is_authenticated %}
-				<p class="w3-xlarge w3-green">Welcome {{ current_user.username }}!</p>
-			{% else %}
-				<p class="w3-xlarge">Enter in an Automatised Crypto World</p>
-			{% endif %}
+	{# current_user object is a basic object available in template man(refer to flask-login doc)#}
+	{% if current_user.is_authenticated %}
+		<p class="w3-xlarge w3-center">Welcome {{ current_user.username }}!</p>
+		<form class="w3-center" method="GET" action="{{ url_for('config') }}">
+     <input class="w3-border w3-button" type="submit" name="configBot"  value="Config a Bot">
+    </form>
+
+	{% else %}
+		<div class="w3-center w3-animate-bottom">
+			<div class="w3-bar">
+					<p class="w3-xlarge">Enter in an Automatised Crypto World</p>
+			</div>
 		</div>
-	</div>
+	{% endif %}
 {% endblock content %}

@@ -4,7 +4,7 @@ import json
 import time
 import os
 import sys
-from flask_login import LoginManager, login_user
+from flask_login import LoginManager, login_user, logout_user
 from flask import Flask, render_template, session, request, url_for, redirect, jsonify, flash
 
 #Import class from classes folder
@@ -78,7 +78,7 @@ def register():
             if error_register:
                 return render_template('register.html', error=error, error_register=error_register)
             else:
-                return render_template('register.html', error=error)
+                return redirect(url_for('index'))
     else:
         return render_template('register.html', error=error)
 
@@ -97,11 +97,46 @@ def login():
             if type(check_login) == str:
                 return render_template('login.html', error=error, check_login=check_login)
             else:
-                print check_login.is_authenticated()
                 #Method from flask-login who log a user in
                 login_user(check_login)
                 return redirect(url_for('index'))
     return render_template('login.html', error=error)
+
+
+@app.route('/logout', methods=['POST','GET'])
+def logout():
+    logout_user()
+    return redirect(url_for('index'))
+
+
+#Temporary route for future foncitonnalities
+@app.route('/building', methods=['GET'])
+def building():
+    return render_template('building.html')
+
+@app.route('/config', methods=['POST','GET'])
+def config():
+    error = None
+    if request.method == 'POST':
+        if request.form['bttnInfo'] == 'Get Info':
+            selected_crypto.trigramme = request.form['cryptoTrigramme']
+            selected_crypto.devise = request.form['cryptoDevise']
+            selected_crypto.assign_symbol()
+            selected_crypto.url = 'https://min-api.cryptocompare.com/data/pricemultifull?fsyms=' + selected_crypto.trigramme + '&tsyms=' + selected_crypto.devise
+            
+            cryptoInfo = requests.get(selected_crypto.url)
+            cryptoInfoJson = cryptoInfo.json()
+            
+            selected_crypto.price = cryptoInfoJson['RAW'][selected_crypto.trigramme][selected_crypto.devise]['PRICE']    
+            selected_crypto.openDay = cryptoInfoJson['RAW'][selected_crypto.trigramme][selected_crypto.devise]['OPENDAY']
+            selected_crypto.highDay = cryptoInfoJson['RAW'][selected_crypto.trigramme][selected_crypto.devise]['HIGHDAY'] 
+            selected_crypto.lowDay = cryptoInfoJson['RAW'][selected_crypto.trigramme][selected_crypto.devise]['LOWDAY']
+            selected_crypto.marketCap = cryptoInfoJson['RAW'][selected_crypto.trigramme][selected_crypto.devise]['MKTCAP'] 
+            selected_crypto.evolutionDay = cryptoInfoJson['RAW'][selected_crypto.trigramme][selected_crypto.devise]['CHANGEPCTDAY']
+
+            return render_template('configBot.html', selected_crypto=selected_crypto, error=error)
+    else:
+        return render_template('configBot.html', base_crypto=base_crypto, error=error)
 
 @app.route('/startbot', methods=['POST','GET'])
 def startbot():

@@ -1,0 +1,13 @@
+{% extends "skeleton.html" %}
+{% block content %}
+		<div class="w3-center w3-animate-bottom">
+			<div class="w3-bar">
+					<p class="w3-xlarge">WORK IN PROGRESS....</p>
+			</div>
+			<form name="goBack"  action="{{ url_for('index') }}">
+				<div class="w3-animate-bottom" style="text-align:center">
+     			<input type="submit" class="w3-button w3-large w3-border" name="goBack" value="Go Back >">
+      		</div>
+    	</form>
+		</div>
+{% endblock content %}
