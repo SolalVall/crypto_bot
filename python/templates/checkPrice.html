@@ -21,9 +21,9 @@
   	    	$('#priceUpdated').text('Actual Price: ' + data.new_price + ' =');
 					$('#priceUpdated').css( "color", "white" );
 				}
-				
+
   	    $('#firstPrice').text('When you started {{ selected_crypto.name }} bot, price was at: ' + data.comparePrice[0] + '{{ selected_crypto.devise }}');
-				
+
 				//Check crypto variation price
 				if(data.variation < 0){
   	    	$('#variation').text('Variation between First Price and Actual Price: ' + data.variation + ' %');
@@ -40,7 +40,7 @@
 				}
 
   	    console.log(data)
-  	  });      
+  	  });
 	}
 </script>
 
